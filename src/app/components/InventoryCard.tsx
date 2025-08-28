@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import { InventoryItem } from '@/types/inventory-types';
 import Image from 'next/image';
 import { useFees } from '@/hooks/useFees';
@@ -54,11 +55,14 @@ export default function InventoryCard({ car }: { car: InventoryItem }) {
         </div>
         
         <div className="mt-4 flex space-x-2">
-          <button className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors font-medium">
-            View Details
-          </button>
+          {/* View Details Button - Links to dynamic detail page */}
+          <Link href={`/inventory/${car.stockNumber}`} className="flex-1">
+            <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors font-medium">
+              View Details {car.stockNumber}
+            </button>
+          </Link>
           <button className="flex-1 bg-green-600 text-white py-2 rounded hover:bg-green-700 transition-colors font-medium">
-            Contact Dealer
+            Financing Options
           </button>
         </div>
         
