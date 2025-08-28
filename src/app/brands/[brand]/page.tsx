@@ -1,6 +1,8 @@
 import Layout from '../../components/Layout';
 import { notFound } from 'next/navigation';
-
+import { inventory } from '../../../data/inventory';
+import InventoryCard from '../../components/InventoryCard';
+import { getValidInventory } from '@/lib/inventory-utils';
 // Define your brand data with proper typing
 interface BrandData {
     name: string;
@@ -50,8 +52,9 @@ export async function generateMetadata({ params }: { params: { brand: string } }
 export default async function BrandPage({ params }: { params: { brand: string } }) {
     const { brand: brandSlug } = await params;
     const brand = await getBrandData(brandSlug);
-  
-    if (!brand) {
+    const validInventory = getValidInventory(inventory);
+    const availableCars = validInventory.filter(car => car.brand === brandSlug);
+    if (!brand) {   
         return notFound();
     }
 
@@ -76,6 +79,14 @@ export default async function BrandPage({ params }: { params: { brand: string } 
                     </button>
                     </div>
                 ))}
+                </div>
+                <br></br>
+                <h1 className="text-3xl font-bold mb-8">Current Inventory</h1>
+      
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {availableCars.map(car => (
+                    <InventoryCard key={car.id} car={car} />
+                    ))}
                 </div>
             </div>
         </Layout>
